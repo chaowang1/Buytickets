@@ -49,7 +49,8 @@ class HTTPClient(object):
         return {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
             "X-Requested-With": "xmlHttpRequest",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/63.0.3239.132 Safari/537.36",
             "Referer": "https://kyfw.12306.cn/otn/login/init",
             "Connection": "keep-alive",
             "Accept": "*/*",
