@@ -105,7 +105,8 @@ urls = {
         "is_json": True,
     },
     "select_url": {
-        "req_url": "/otn/leftTicket/queryZ?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT",
+        "req_url": "/otn/leftTicket/queryZ?leftTicketDTO.train_date={0}&"
+                   "leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT",
         "req_type": "post",
         "Referer": "https://kyfw.12306.cn/otn/leftTicket/init",
         "Host": "kyfw.12306.cn",
@@ -229,7 +230,8 @@ urls = {
         "req_type": "post"
     },
     "cdn_list": {
-        "req_url": "http://ping.chinaz.com/iframe.ashx?t=ping&callback=jQuery111304824429956769827_{}".format(int(round(time.time() * 1000))),
+        "req_url": "http://ping.chinaz.com/iframe.ashx?t=ping&callback=jQuery111304824429956769827_{}".format(
+            int(round(time.time() * 1000))),
         "req_type": "post"
     }
 }
