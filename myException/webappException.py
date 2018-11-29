@@ -15,4 +15,4 @@ ErrArgs = ServiceError(1000, '参数错误')
 ErrTokenFail = ServiceError(1001, '登录令牌失效')
 ErrUserUnregistered = ServiceError(1002, '用户未注册')
 
-
+ErrInternal = ServiceError(2000, '服务器内部错误')
