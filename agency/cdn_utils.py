@@ -23,7 +23,8 @@ class CDNProxy:
         return {
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
             "X-Requested-With": "xmlHttpRequest",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
             "Referer": "https://kyfw.12306.cn/otn/login/init",
             "Accept": "*/*",
         }
@@ -79,7 +80,8 @@ class CDNProxy:
                         splits = i.split(":")
                         local_dict[splits[0]] = splits[2] if splits[0] == "result" else splits[1]
                     if local_dict and "state" in local_dict and local_dict["state"] == "1":
-                        if "responsetime" in local_dict and local_dict["responsetime"].find("毫秒") != -1 and int(filter(str.isdigit, local_dict["responsetime"])) < 100:
+                        if "responsetime" in local_dict and local_dict["responsetime"].find("毫秒") != -1 and \
+                                int(filter(str.isdigit, local_dict["responsetime"])) < 100:
                             f.write(json.dumps(local_dict)+"\n")
                             num += 1
             except Exception as e:
