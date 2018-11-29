@@ -1,6 +1,4 @@
 import os
-import string
-import random
 from flask_docs import ApiDoc
 from contextlib import contextmanager
 
@@ -17,17 +15,16 @@ app = Flask(__name__,
             )
 
 app.config.from_object(config)
-app.secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits + string.ascii_lowercase, k=40))
+
+app.secret_key = '9pf0glVwIwsvGsgmheQRRBoumt1TbSq6fmfhjztL'
 
 app.config['API_DOC_MEMBER'] = ['ticket']
 app.config['RESTFUL_API_DOC_EXCLUDE'] = []
 ApiDoc(app)
 
-engine = create_engine(app.config['DB_URI'] + '?charset=utf8',
+engine = create_engine(app.config['DB_URI'],
                        encoding='utf-8',
                        convert_unicode=True,
-                       echo=app.config['DB_ECHO'],
-                       pool_pre_ping=True,
                        )
 session_factory = sessionmaker(bind=engine)
 

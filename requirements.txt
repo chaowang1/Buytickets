@@ -7,3 +7,6 @@ Pillow==5.0.0
 flask==1.0.2
 sqlalchemy==1.2.14
 flask_docs==0.0.8
+flask_script
+voluptuous
+werkzeug
