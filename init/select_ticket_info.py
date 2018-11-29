@@ -27,9 +27,11 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class select:
+class SELECT(object):
     def __init__(self):
-        self.from_station, self.to_station, self.station_dates, self._station_seat, self.is_more_ticket, self.ticke_peoples, self.select_refresh_interval, self.station_trains, self.ticket_black_list_time = self.get_ticket_info()
+        self.from_station, self.to_station, self.station_dates, self._station_seat, \
+        self.is_more_ticket, self.ticke_peoples, self.select_refresh_interval, \
+        self.station_trains, self.ticket_black_list_time = self.get_ticket_info()
         self.is_aotu_code = _get_yaml()["is_aotu_code"]
         self.aotu_code_type = _get_yaml()["aotu_code_type"]
         self.is_cdn = _get_yaml()["is_cdn"]
@@ -65,20 +67,22 @@ class select:
         station_trains = ticket_info_config["set"]["station_trains"]
         ticket_black_list_time = ticket_info_config["ticket_black_list_time"]
         print "*"*20
-        print u"当前配置：出发站：{0}\n到达站：{1}\n乘车日期：{2}\n坐席：{3}\n是否有票自动提交：{4}\n乘车人：{5}\n刷新间隔：{6}\n候选购买车次：{7}\n僵尸票关小黑屋时长：{8}\n".format\
-                                                                                      (
-                                                                                      from_station,
-                                                                                      to_station,
-                                                                                      station_dates,
-                                                                                      ",".join(set_type),
-                                                                                      is_more_ticket,
-                                                                                      ",".join(ticke_peoples),
-                                                                                      select_refresh_interval,
-                                                                                      ",".join(station_trains),
-                                                                                      ticket_black_list_time,
-            )
+        print u"当前配置：出发站：{0}\n到达站：{1}\n乘车日期：{2}\n坐席：" \
+              u"{3}\n是否有票自动提交：{4}\n乘车人：{5}\n刷新间隔：" \
+              u"{6}\n候选购买车次：{7}\n僵尸票关小黑屋时长：{8}\n".\
+            format(from_station,
+                   to_station,
+                   station_dates,
+                   ",".join(set_type),
+                   is_more_ticket,
+                   ",".join(ticke_peoples),
+                   select_refresh_interval,
+                   ",".join(station_trains),
+                   ticket_black_list_time,
+                   )
         print "*"*20
-        return from_station, to_station, station_dates, set_type, is_more_ticket, ticke_peoples, select_refresh_interval, station_trains, ticket_black_list_time
+        return from_station, to_station, station_dates, set_type, is_more_ticket, ticke_peoples, \
+               select_refresh_interval, station_trains, ticket_black_list_time
 
     def get_order_request_params(self):
         return self.order_request_params
@@ -565,9 +569,14 @@ class select:
                 queryOrderWaitTimeResult = {}
             if queryOrderWaitTimeResult:
                 if "status" in queryOrderWaitTimeResult and queryOrderWaitTimeResult["status"]:
-                    if "orderId" in queryOrderWaitTimeResult["data"] and queryOrderWaitTimeResult["data"]["orderId"] is not None:
-                        sendEmail(u"恭喜您订票成功，订单号为：{0}, 请立即打开浏览器登录12306，访问‘未完成订单’，在30分钟内完成支付！".format(queryOrderWaitTimeResult["data"]["orderId"]))
-                        raise ticketIsExitsException(u"恭喜您订票成功，订单号为：{0}, 请立即打开浏览器登录12306，访问‘未完成订单’，在30分钟内完成支付！".format(queryOrderWaitTimeResult["data"]["orderId"]))
+                    if "orderId" in queryOrderWaitTimeResult["data"] and \
+                            queryOrderWaitTimeResult["data"]["orderId"] is not None:
+                        sendEmail(u"恭喜您订票成功，订单号为：{0}, 请立即打开浏览器登录12306，"
+                                  u"访问‘未完成订单’，在30分钟内完成支付！".
+                                  format(queryOrderWaitTimeResult["data"]["orderId"]))
+                        raise ticketIsExitsException(u"恭喜您订票成功，订单号为：{0}, "
+                                                     u"请立即打开浏览器登录12306，访问‘未完成订单’，在30分钟内完成支付！".
+                                                     format(queryOrderWaitTimeResult["data"]["orderId"]))
                     elif "msg" in queryOrderWaitTimeResult["data"] and queryOrderWaitTimeResult["data"]["msg"]:
                         print queryOrderWaitTimeResult["data"]["msg"]
                         break
@@ -599,14 +608,22 @@ class select:
         except ValueError:
             queryMyOrderNoCompleteResult = {}
         if queryMyOrderNoCompleteResult:
-            if "data" in queryMyOrderNoCompleteResult and queryMyOrderNoCompleteResult["data"] and "orderDBList" in queryMyOrderNoCompleteResult["data"] and queryMyOrderNoCompleteResult["data"]["orderDBList"]:
+            if "data" in queryMyOrderNoCompleteResult and \
+                    queryMyOrderNoCompleteResult["data"] and \
+                    "orderDBList" in queryMyOrderNoCompleteResult["data"] and \
+                    queryMyOrderNoCompleteResult["data"]["orderDBList"]:
                 orderId = queryMyOrderNoCompleteResult["data"]["orderDBList"][0]["sequence_no"]
                 print 'orderId is {0}'.format(orderId)
                 return orderId
-            elif "data" in queryMyOrderNoCompleteResult and "orderCacheDTO" in queryMyOrderNoCompleteResult["data"] and queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]:
-                if "message" in queryMyOrderNoCompleteResult["data"]["orderCacheDTO"] and queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]["message"]:
+            elif "data" in queryMyOrderNoCompleteResult and \
+                    "orderCacheDTO" in queryMyOrderNoCompleteResult["data"] and \
+                    queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]:
+                if "message" in queryMyOrderNoCompleteResult["data"]["orderCacheDTO"] and \
+                        queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]["message"]:
                     print(queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]["message"]["message"])
-                    raise ticketNumOutException(queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]["message"]["message"])
+                    raise ticketNumOutException(
+                        queryMyOrderNoCompleteResult["data"]["orderCacheDTO"]["message"]["message"]
+                    )
             else:
                 if "message" in queryMyOrderNoCompleteResult and queryMyOrderNoCompleteResult["message"]:
                     print queryMyOrderNoCompleteResult["message"]
@@ -639,7 +656,9 @@ class select:
             "_json_att": ""
         }
         cancelNoCompleteMyOrderResult = self.httpClint.send(cancelNoCompleteMyOrderUrl, cancelNoCompleteMyOrderData)
-        if "data" in cancelNoCompleteMyOrderResult and "existError" in cancelNoCompleteMyOrderResult["data"] and cancelNoCompleteMyOrderResult["data"]["existError"] == "N":
+        if "data" in cancelNoCompleteMyOrderResult and\
+                "existError" in cancelNoCompleteMyOrderResult["data"] and\
+                cancelNoCompleteMyOrderResult["data"]["existError"] == "N":
             print(u"排队超时，已为您自动取消订单，订单编号: {0}".format(sequence_no))
             time.sleep(2)
             return True
@@ -709,7 +728,8 @@ class select:
         while 1:
             try:
                 num += 1
-                if "user_time" in self.is_check_user and (datetime.datetime.now() - self.is_check_user["user_time"]).seconds/60 > 5:
+                if "user_time" in self.is_check_user and\
+                        (datetime.datetime.now() - self.is_check_user["user_time"]).seconds/60 > 5:
                     # 5分钟检查一次用户是否登录
                     self.check_user()
                 time.sleep(self.select_refresh_interval)
@@ -720,11 +740,12 @@ class select:
                 start_time = datetime.datetime.now()
                 self.submitOrderRequestImplement(from_station, to_station)
                 cost_time = (datetime.datetime.now()-start_time).microseconds/1000
-                print u"正在第{0}次查询  乘车日期: {1}  车次{2} 查询无票  cdn轮询IP {4} 当前cdn总数{5} 总耗时{3}ms".format(num,
-                                                                                                 ",".join(self.station_dates),
-                                                                                                 ",".join(self.station_trains),
-                                                                                                 cost_time, self.httpClint.cdn,
-                                                                                                 len(self.cdn_list))
+                print u"正在第{0}次查询  乘车日期: {1}  车次{2} 查询无票  cdn轮询IP {4} 当前cdn总数{5} 总耗时{3}ms".\
+                    format(num,
+                           ",".join(self.station_dates),
+                           ",".join(self.station_trains),
+                           cost_time, self.httpClint.cdn,
+                           len(self.cdn_list))
                 if cost_time > 400:
                     self.cdn_list.remove(self.httpClint.cdn)
                 self.set_cdn()
