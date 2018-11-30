@@ -11,7 +11,7 @@ __version__ = '1.0.0'
 
 DB_ECHO = False
 
-DB_URI = 'sqlite:///{}'.format(webroot)
+DB_URI = 'sqlite:///{}/ticket.db'.format(webroot)
 
 
 

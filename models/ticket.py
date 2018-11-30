@@ -39,7 +39,7 @@ class Customer(Base):
     """
     购票者信息
     """
-    __tablename__ = 'Customer'
+    __tablename__ = 'customer'
 
     id = Column(Integer, primary_key=True)
     customer_uid = Column(String(64), nullable=False)
@@ -56,3 +56,6 @@ class Customer(Base):
             'name': self.name,
             'card_id': self.card_id
         }
+
+
+Base.metadata.create_all(engine)

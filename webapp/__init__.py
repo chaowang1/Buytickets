@@ -8,7 +8,7 @@ from voluptuous import MultipleInvalid
 from werkzeug import exceptions as wkerr
 
 from util import jsonify
-from config.logger import logger as LOGGER
+from config.logger import log as LOGGER
 from myException import webappException as Err
 
 
@@ -20,14 +20,15 @@ def route(app, *args, **kwargs):
             try:
                 rv = func(*args, **kwargs)
             except (wkerr.BadRequest, MultipleInvalid) as e:
-                LOGGER.exception_log(str(e))
+                LOGGER(str(e))
                 return jsonify(request.path, has_error=True, data=Err.ErrArgs)
             except Err.ServiceError as e:
                 if e.code == 1001:
                     return Response('relogin', status=599)
                 return jsonify(request.path, has_error=True, data=e)
-            except Exception:
-                LOGGER.exception_log(traceback.format_exc())
+            except Exception as e:
+                print(e)
+                LOGGER(traceback.format_exc())
                 return jsonify(request.path, has_error=True, data=Err.ErrInternal)
 
             return jsonify(request.path, data=rv)
